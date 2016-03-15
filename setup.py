@@ -36,16 +36,23 @@ def get_sources():
 
 
 class LibraryBuilder(build_ext):
+    """This builds the capstone dll.
+
+    We just use setuptools normal builder for shared objects (which python
+    extensions are.
+    """
     def get_export_symbols(self, ext):
+        """We do not need to export anything specific."""
         return []
 
-    def get_ext_filename(self, ext_name):
+    def get_ext_filename(self, _):
+        """Get the filename of the final shared object."""
         # Capston specifically looks for these by name differently on each OS.
-        if os.name == 'nt':
+        if SYSTEM == "windows":
             return "capstone/capstone.dll"
 
-        if os.name == "darwin":
-            return "capstone/libcapstone.dynlib"
+        if SYSTEM == "darwin":
+            return "capstone/libcapstone.dylib"
 
         return "capstone/libcapstone.so"
 
