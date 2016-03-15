@@ -1,3 +1,4 @@
 recursive-include src *
+recursive-include windows *
 include LICENSE.TXT
 include README

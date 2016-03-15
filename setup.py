@@ -19,7 +19,7 @@ from setuptools.command.build_ext import build_ext
 
 
 SYSTEM = platform.system().lower()
-VERSION = '3.0.4'
+VERSION = '3.0.4.post2'
 
 
 def get_sources():
@@ -152,8 +152,14 @@ class UpdateCommand(Command):
 
 
 include_dirs = ["src", "src/include", "src/arch"]
+compile_args = []
 if SYSTEM == "windows":
     include_dirs.append("windows")
+
+    # The MSVC2010 compiler can not handle optimization properly. It breaks with
+    # an error "fatal error C1063: compiler limit : compiler stack overflow" so
+    # we just switch optimization off.
+    compile_args.append("/Od")
 
 
 setup(
@@ -196,6 +202,7 @@ setup(
                 ('CAPSTONE_HAS_XCORE', 1),
                 ('CAPSTONE_USE_SYS_DYN_MEM', 1),
                 ('CAPSTONE_SHARED', 1)],
-            include_dirs=include_dirs)
+            include_dirs=include_dirs,
+            extra_compile_args=compile_args)
     ],
 )
