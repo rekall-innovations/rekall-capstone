@@ -20,7 +20,7 @@ from setuptools.command.build_ext import build_ext
 
 
 SYSTEM = platform.system().lower()
-VERSION = '3.0.4.post2'
+VERSION = '3.0.4.post3'
 
 
 def get_sources():
