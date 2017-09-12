@@ -5,6 +5,7 @@ This version does not use or need CMake - this means it will build on windows
 only with the MSVC compilers for python
 (https://www.microsoft.com/en-us/download/details.aspx?id=44266)
 """
+from __future__ import print_function
 
 import glob
 import os
@@ -19,7 +20,7 @@ from setuptools.command.build_ext import build_ext
 
 
 SYSTEM = platform.system().lower()
-VERSION = '3.0.4.post2'
+VERSION = '3.0.4.post3'
 
 
 def get_sources():
@@ -104,7 +105,7 @@ class SDistCommand(sdist):
 
         for filename in result:
             outpath = os.path.join("./src/", os.path.basename(filename))
-            print "%s -> %s" % (filename, outpath)
+            print("%s -> %s" % (filename, outpath))
             shutil.copy(filename, outpath)
 
 
