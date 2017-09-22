@@ -11,6 +11,7 @@ import glob
 import os
 import platform
 import shutil
+import sys
 import subprocess
 
 from distutils import dir_util
@@ -20,7 +21,7 @@ from setuptools.command.build_ext import build_ext
 
 
 SYSTEM = platform.system().lower()
-VERSION = '3.0.4.post3'
+VERSION = '3.0.5'
 
 
 def get_sources():
@@ -154,6 +155,12 @@ class UpdateCommand(Command):
 
 include_dirs = ["src", "src/include", "src/arch"]
 compile_args = []
+
+extension = "libcapstone"
+if sys.version_info.major == 2:
+    extension = "capstone." + extension
+
+
 if SYSTEM == "windows":
     include_dirs.append("windows")
 
@@ -187,7 +194,7 @@ setup(
     zip_safe=False,
     ext_modules=[
         Extension(
-            "capstone.libcapstone",
+            extension,
             get_sources(),
             define_macros=[
                 ('CAPSTONE_X86_ATT_DISABLE_NO', 1),
