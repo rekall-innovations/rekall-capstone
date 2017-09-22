@@ -109,6 +109,11 @@ class SDistCommand(sdist):
             print("%s -> %s" % (filename, outpath))
             shutil.copy(filename, outpath)
 
+        # Apply local patches.
+        subprocess.check_call(["patch", "-d", "capstone/", "-i",
+                               # Relative to capstone/
+                               "../patches/000001.patch"])
+
 
 class CleanCommand(Command):
     description = ("custom clean command that forcefully removes "
@@ -156,11 +161,6 @@ class UpdateCommand(Command):
 include_dirs = ["src", "src/include", "src/arch"]
 compile_args = []
 
-extension = "libcapstone"
-if sys.version_info.major == 2:
-    extension = "capstone." + extension
-
-
 if SYSTEM == "windows":
     include_dirs.append("windows")
 
@@ -194,7 +194,7 @@ setup(
     zip_safe=False,
     ext_modules=[
         Extension(
-            extension,
+            "libcapstone",
             get_sources(),
             define_macros=[
                 ('CAPSTONE_X86_ATT_DISABLE_NO', 1),

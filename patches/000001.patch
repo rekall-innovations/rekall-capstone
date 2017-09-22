@@ -1,0 +1,11 @@
+diff -Nur capstone_source/bindings/python/capstone/__init__.py capstone/__init__.py
+--- capstone_source/bindings/python/capstone/__init__.py        2017-09-22 16:10:05.959518416 -0700
++++ capstone/__init__.py        2017-09-22 16:09:43.109723679 -0700
+@@ -240,6 +240,7 @@
+               join(split(__file__)[0], 'lib'),
+               '',
+               distutils.sysconfig.get_python_lib(),
++              distutils.sysconfig.get_python_lib() + "/capstone",
+               "/usr/local/lib/" if sys.platform == 'darwin' else '/usr/lib64']
+
+ for _path in _path_list:
