@@ -21,7 +21,7 @@ from setuptools.command.build_ext import build_ext
 
 
 SYSTEM = platform.system().lower()
-VERSION = '3.0.5'
+VERSION = '3.0.5.post1'
 
 
 def get_sources():
@@ -162,7 +162,10 @@ include_dirs = ["src", "src/include", "src/arch"]
 compile_args = []
 
 if SYSTEM == "windows":
-    include_dirs.append("windows")
+    # Python 2 on windows uses an ancient compiler which does not have
+    # stdint. Python 3 uses VC14 which has a working stdint.h
+    if sys.version_info[0] < 3:
+        include_dirs.append("windows")
 
     # The MSVC2010 compiler can not handle optimization properly. It breaks with
     # an error "fatal error C1063: compiler limit : compiler stack overflow" so
